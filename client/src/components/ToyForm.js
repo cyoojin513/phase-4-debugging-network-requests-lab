@@ -28,14 +28,19 @@ function ToyForm({ onAddToy }) {
       },
       body: JSON.stringify(newToy),
     })
-      .then((r) => r.json())
-      .then((newToy) => {
-        setFormData({
-          name: "",
-          image: "",
-        });
-        onAddToy(newToy);
-      });
+      .then((r) => {
+        if(r.ok){
+          r.json().then((newToy) => {
+            setFormData({
+              name: "",
+              image: "",
+            });
+            onAddToy(newToy);
+          })
+        } else {
+          r.json().then(e => console.log(e.error))
+        }
+      })
   }
 
   return (
